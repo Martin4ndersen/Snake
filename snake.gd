@@ -1,14 +1,21 @@
 extends Node2D
 
-var direction = Vector2.RIGHT
 var move_delay = 0.1
 var move_timer = 0.0
-var grid
-var snake = [Vector2(7, 4), Vector2(6, 4), Vector2(5, 4), Vector2(4, 4), Vector2(3, 4), Vector2(2, 4), Vector2(1, 4)]
-var snake_directions = [Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT]  # Track directions for each part
+var grid : TileMapLayer
+var direction : Vector2
+var snake
+var snake_directions
+var sprite_size : float = 40.0  # Size of the sprite in pixels
+var window_size : Vector2
+
 
 func _init(grid_node):
 	grid = grid_node
+	reset()
+
+func _ready() -> void:
+	window_size = get_viewport_rect().size
 
 func handle_input():
 	if Input.is_action_pressed("ui_up") and direction != Vector2.DOWN:
@@ -29,6 +36,25 @@ func move():
 	# Move the snake's head in the current direction
 	snake[0] += direction
 	snake_directions[0] = direction
+
+	if is_collision_with_edges():
+		reset()
+
+func reset():
+	direction = Vector2.RIGHT
+	snake = [Vector2(16, 7), Vector2(15, 7), Vector2(14, 7), Vector2(13, 7), Vector2(12, 7), Vector2(11, 7), Vector2(10, 7)]
+	snake_directions = [Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT]  # Track directions for each part
+
+func is_collision_with_edges():
+	var head = snake[0]
+
+	if head.x < 0 or head.x > window_size.x / sprite_size - 1:
+		return true
+
+	if head.y < 0 or head.y > window_size.y / sprite_size - 1:
+		return true
+
+	return false
 
 func draw():
 	var atlas_coords: Vector2i
