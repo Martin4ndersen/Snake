@@ -37,13 +37,22 @@ func move():
 	snake[0] += direction
 	snake_directions[0] = direction
 
-	if is_collision_with_edges():
+	if is_collision_with_edges() or is_collision_with_self():
 		reset()
 
 func reset():
 	direction = Vector2.RIGHT
 	snake = [Vector2(16, 7), Vector2(15, 7), Vector2(14, 7), Vector2(13, 7), Vector2(12, 7), Vector2(11, 7), Vector2(10, 7)]
 	snake_directions = [Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT]  # Track directions for each part
+
+func is_collision_with_self():
+	var head = snake[0]
+	
+	for i in range(1, snake.size()):
+		if head == snake[i]:
+			return true
+			
+	return false
 
 func is_collision_with_edges():
 	var head = snake[0]
