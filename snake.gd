@@ -9,14 +9,21 @@ var snake_directions
 var sprite_size : float = 40.0  # Size of the sprite in pixels
 var window_size : Vector2
 
-
+# Constructor for the snake object. It initializes the snake by passing a reference to the grid node
+# and calls the `reset` function to set up the initial state of the snake.
 func _init(grid_node):
 	grid = grid_node
 	reset()
 
+# Called when the node is added to the scene and ready to execute.
+# This function retrieves the size of the current viewport (game window) and stores it in `window_size`,
+# which will be used to check for edge collisions.
 func _ready() -> void:
 	window_size = get_viewport_rect().size
 
+# Handles player input to change the snake's direction based on arrow key presses.
+# The snake can only move in a direction that is not opposite to its current direction,
+# preventing it from reversing into itself.
 func handle_input():
 	if Input.is_action_pressed("ui_up") and direction != Vector2.DOWN:
 		direction = Vector2.UP
@@ -27,6 +34,9 @@ func handle_input():
 	elif Input.is_action_pressed("ui_right") and direction != Vector2.LEFT:
 		direction = Vector2.RIGHT
 
+# Moves the snake's body and head, and checks for collisions with edges or itself.
+# The snake's body parts follow the movement of the part ahead of them, while the head moves in the current direction.
+# If a collision with the window edges or the snake's own body occurs, the snake is reset.
 func move():
 	# Move the snake's body
 	for i in range(snake.size() - 1, 0, -1):
@@ -45,6 +55,10 @@ func reset():
 	snake = [Vector2(16, 7), Vector2(15, 7), Vector2(14, 7), Vector2(13, 7), Vector2(12, 7), Vector2(11, 7), Vector2(10, 7)]
 	snake_directions = [Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT]  # Track directions for each part
 
+# Checks if the snake's head collides with any part of its own body.
+# This function iterates through all parts of the snake's body (excluding the head)
+# and checks if the head occupies the same position as any of the body parts.
+# If a collision is detected, it returns `true`. Otherwise, it returns `false`.
 func is_collision_with_self():
 	var head = snake[0]
 	
@@ -54,6 +68,9 @@ func is_collision_with_self():
 			
 	return false
 
+# Checks if the snake's head collides with the edges of the game window.
+# The function checks whether the head's x or y position goes outside the window's boundaries.
+# If the head crosses the boundaries, it returns `true`. Otherwise, it returns `false`.
 func is_collision_with_edges():
 	var head = snake[0]
 
@@ -65,6 +82,9 @@ func is_collision_with_edges():
 
 	return false
 
+# Draws the snake on the grid using atlas coordinates for different parts of the snake (head, body, and tail).
+# Each part of the snake is drawn according to its position and direction, and different atlas coordinates are used
+# to represent the head, tail, and body based on their direction and the connection between parts.
 func draw():
 	var atlas_coords: Vector2i
 	
