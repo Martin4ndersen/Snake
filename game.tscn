@@ -1,7 +1,19 @@
-[gd_scene load_steps=5 format=3 uid="uid://cnqcq21sid7m8"]
+[gd_scene load_steps=9 format=3 uid="uid://cnqcq21sid7m8"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_7475o"]
-[ext_resource type="Texture2D" uid="uid://isv4sfevij80" path="res://sprite_sheet.png" id="2_5vc0c"]
+[ext_resource type="Texture2D" uid="uid://isv4sfevij80" path="res://objects.png" id="2_5vc0c"]
+[ext_resource type="Script" path="res://grid.gd" id="2_7ngep"]
+[ext_resource type="Texture2D" uid="uid://orhdjvwd6j8m" path="res://grass.png" id="2_rjt54"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_brrx7"]
+texture = ExtResource("2_rjt54")
+texture_region_size = Vector2i(40, 40)
+0:0/0 = 0
+1:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_0hg2u"]
+tile_size = Vector2i(40, 40)
+sources/0 = SubResource("TileSetAtlasSource_brrx7")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gnqsg"]
 texture = ExtResource("2_5vc0c")
@@ -29,5 +41,11 @@ sources/0 = SubResource("TileSetAtlasSource_gnqsg")
 [node name="Game" type="Node2D"]
 script = ExtResource("1_7475o")
 
-[node name="Grid" type="TileMapLayer" parent="."]
+[node name="Grid" type="Node2D" parent="."]
+script = ExtResource("2_7ngep")
+
+[node name="Ground" type="TileMapLayer" parent="Grid"]
+tile_set = SubResource("TileSet_0hg2u")
+
+[node name="Objects" type="TileMapLayer" parent="Grid"]
 tile_set = SubResource("TileSet_r6wv6")
