@@ -2,17 +2,17 @@ extends Node2D
 
 var move_delay = 0.1
 var move_timer = 0.0
-var grid : TileMapLayer
+var tile_map_layer : TileMapLayer
 var direction : Vector2
-var snake
+var snake: Array[Vector2]
 var snake_directions
 var sprite_size : float = 40.0  # Size of the sprite in pixels
 var window_size : Vector2
 
 # Constructor for the snake object. It initializes the snake by passing a reference to the grid node
 # and calls the `reset` function to set up the initial state of the snake.
-func _init(grid_node):
-	grid = grid_node
+func _init(tile_map_layer):
+	self.tile_map_layer = tile_map_layer
 	reset()
 
 # Called when the node is added to the scene and ready to execute.
@@ -49,6 +49,9 @@ func move():
 
 	if is_collision_with_edges() or is_collision_with_self():
 		reset()
+
+func get_head_position() -> Vector2i:
+	return snake[0]
 
 func reset():
 	direction = Vector2.RIGHT
@@ -137,4 +140,4 @@ func draw():
 			elif previous_part_direction == Vector2.RIGHT and part_direction == Vector2.RIGHT:
 				atlas_coords = Vector2i(2, 1)
 	
-		grid.set_cell(Vector2i(part.x, part.y), 0, atlas_coords)
+		tile_map_layer.set_cell(Vector2i(part.x, part.y), 0, atlas_coords)
