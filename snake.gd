@@ -1,13 +1,13 @@
 extends Node2D
 
-var move_delay = 0.1
-var move_timer = 0.0
+var move_delay: float = 0.1
+var move_timer: float = 0.0
 var tile_map_layer : TileMapLayer
-var direction : Vector2
-var snake: Array[Vector2]
-var snake_directions
+var direction : Vector2i
+var snake_segments: Array[Vector2i]
+var snake_directions: Array[Vector2i]
 var sprite_size : float = 40.0  # Size of the sprite in pixels
-var window_size : Vector2
+var window_size : Vector2i
 
 # Constructor for the snake object. It initializes the snake by passing a reference to the grid node
 # and calls the `reset` function to set up the initial state of the snake.
@@ -25,48 +25,56 @@ func _ready() -> void:
 # The snake can only move in a direction that is not opposite to its current direction,
 # preventing it from reversing into itself.
 func handle_input():
-	if Input.is_action_pressed("ui_up") and direction != Vector2.DOWN:
-		direction = Vector2.UP
-	elif Input.is_action_pressed("ui_down") and direction != Vector2.UP:
-		direction = Vector2.DOWN
-	elif Input.is_action_pressed("ui_left") and direction != Vector2.RIGHT:
-		direction = Vector2.LEFT
-	elif Input.is_action_pressed("ui_right") and direction != Vector2.LEFT:
-		direction = Vector2.RIGHT
+	if Input.is_action_pressed("ui_up") and direction != Vector2i.DOWN:
+		direction = Vector2i.UP
+	elif Input.is_action_pressed("ui_down") and direction != Vector2i.UP:
+		direction = Vector2i.DOWN
+	elif Input.is_action_pressed("ui_left") and direction != Vector2i.RIGHT:
+		direction = Vector2i.LEFT
+	elif Input.is_action_pressed("ui_right") and direction != Vector2i.LEFT:
+		direction = Vector2i.RIGHT
 
 # Moves the snake's body and head, and checks for collisions with edges or itself.
-# The snake's body parts follow the movement of the part ahead of them, while the head moves in the current direction.
+# The snake's body segments follow the movement of the segment ahead of them, while the head moves in the current direction.
 # If a collision with the window edges or the snake's own body occurs, the snake is reset.
 func move():
 	# Move the snake's body
-	for i in range(snake.size() - 1, 0, -1):
-		snake[i] = snake[i - 1]
+	for i in range(snake_segments.size() - 1, 0, -1):
+		snake_segments[i] = snake_segments[i - 1]
 		snake_directions[i] = snake_directions[i - 1]
 	
 	# Move the snake's head in the current direction
-	snake[0] += direction
+	snake_segments[0] += direction
 	snake_directions[0] = direction
 
 	if is_collision_with_edges() or is_collision_with_self():
 		reset()
 
 func get_head_position() -> Vector2i:
-	return snake[0]
+	return snake_segments[0]
+
+# Grows the snake by adding a new segment at the end.
+func grow() -> void:
+	var last_segment = snake_segments[snake_segments.size() - 1]
+	var last_direction = snake_directions[snake_directions.size() - 1]
+	# Add a new segment in the opposite direction of the last one
+	snake_segments.append(last_segment - last_direction)
+	snake_directions.append(last_direction)
 
 func reset():
-	direction = Vector2.RIGHT
-	snake = [Vector2(16, 7), Vector2(15, 7), Vector2(14, 7), Vector2(13, 7), Vector2(12, 7), Vector2(11, 7), Vector2(10, 7)]
-	snake_directions = [Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT, Vector2.RIGHT]  # Track directions for each part
+	direction = Vector2i.RIGHT
+	snake_segments = [Vector2i(16, 7), Vector2i(15, 7), Vector2i(14, 7)]
+	snake_directions = [Vector2i.RIGHT, Vector2i.RIGHT, Vector2i.RIGHT]  # Track directions for each segment
 
-# Checks if the snake's head collides with any part of its own body.
-# This function iterates through all parts of the snake's body (excluding the head)
-# and checks if the head occupies the same position as any of the body parts.
+# Checks if the snake's head collides with any segment of its own body.
+# This function iterates through all segments of the snake's body (excluding the head)
+# and checks if the head occupies the same position as any of the body segments.
 # If a collision is detected, it returns `true`. Otherwise, it returns `false`.
 func is_collision_with_self():
-	var head = snake[0]
+	var head = snake_segments[0]
 	
-	for i in range(1, snake.size()):
-		if head == snake[i]:
+	for i in range(1, snake_segments.size()):
+		if head == snake_segments[i]:
 			return true
 			
 	return false
@@ -75,7 +83,7 @@ func is_collision_with_self():
 # The function checks whether the head's x or y position goes outside the window's boundaries.
 # If the head crosses the boundaries, it returns `true`. Otherwise, it returns `false`.
 func is_collision_with_edges():
-	var head = snake[0]
+	var head = snake_segments[0]
 
 	if head.x < 0 or head.x > window_size.x / sprite_size - 1:
 		return true
@@ -85,59 +93,59 @@ func is_collision_with_edges():
 
 	return false
 
-# Draws the snake on the grid using atlas coordinates for different parts of the snake (head, body, and tail).
-# Each part of the snake is drawn according to its position and direction, and different atlas coordinates are used
-# to represent the head, tail, and body based on their direction and the connection between parts.
+# Draws the snake on the grid using atlas coordinates for different segments of the snake (head, body, and tail).
+# Each segment of the snake is drawn according to its position and direction, and different atlas coordinates are used
+# to represent the head, tail, and body based on their direction and the connection between segments.
 func draw():
 	var atlas_coords: Vector2i
 	
-	for i in range(snake.size()):
-		var part = snake[i]
-		var part_direction = snake_directions[i]
-		var previous_part_direction = snake_directions[i - 1]
+	for i in range(snake_segments.size()):
+		var segment = snake_segments[i]
+		var segment_direction = snake_directions[i]
+		var previous_segment_direction = snake_directions[i - 1]
 	
 		if i == 0: # head
-			if part_direction == Vector2.UP:
+			if segment_direction == Vector2i.UP:
 				atlas_coords = Vector2i(3, 2)
-			elif part_direction == Vector2.DOWN:
+			elif segment_direction == Vector2i.DOWN:
 				atlas_coords = Vector2i(0, 2)
-			elif part_direction == Vector2.LEFT:
+			elif segment_direction == Vector2i.LEFT:
 				atlas_coords = Vector2i(1, 2)
-			elif part_direction == Vector2.RIGHT:
+			elif segment_direction == Vector2i.RIGHT:
 				atlas_coords = Vector2i(2, 2)
-		elif i == snake.size() - 1: # tail				
-			if previous_part_direction == Vector2.RIGHT:
+		elif i == snake_segments.size() - 1: # tail
+			if previous_segment_direction == Vector2i.RIGHT:
 				atlas_coords = Vector2i(1, 3)
-			elif previous_part_direction == Vector2.LEFT:
+			elif previous_segment_direction == Vector2i.LEFT:
 				atlas_coords = Vector2i(2, 3)
-			elif previous_part_direction == Vector2.UP:
+			elif previous_segment_direction == Vector2i.UP:
 				atlas_coords = Vector2i(0, 3)
-			elif previous_part_direction == Vector2.DOWN:
+			elif previous_segment_direction == Vector2i.DOWN:
 				atlas_coords = Vector2i(3, 3)
 		else: # body
-			if previous_part_direction == Vector2.UP and part_direction == Vector2.RIGHT:
+			if previous_segment_direction == Vector2i.UP and segment_direction == Vector2i.RIGHT:
 				atlas_coords = Vector2i(3, 1)
-			elif previous_part_direction == Vector2.UP and part_direction == Vector2.LEFT:
+			elif previous_segment_direction == Vector2i.UP and segment_direction == Vector2i.LEFT:
 				atlas_coords = Vector2i(4, 1)
-			elif previous_part_direction == Vector2.DOWN and part_direction == Vector2.RIGHT:
+			elif previous_segment_direction == Vector2i.DOWN and segment_direction == Vector2i.RIGHT:
 				atlas_coords = Vector2i(0, 1)
-			elif previous_part_direction == Vector2.DOWN and part_direction == Vector2.LEFT:
+			elif previous_segment_direction == Vector2i.DOWN and segment_direction == Vector2i.LEFT:
 				atlas_coords = Vector2i(1, 1)
-			elif previous_part_direction == Vector2.RIGHT and part_direction == Vector2.DOWN:
+			elif previous_segment_direction == Vector2i.RIGHT and segment_direction == Vector2i.DOWN:
 				atlas_coords = Vector2i(4, 1)
-			elif previous_part_direction == Vector2.RIGHT and part_direction == Vector2.UP:
+			elif previous_segment_direction == Vector2i.RIGHT and segment_direction == Vector2i.UP:
 				atlas_coords = Vector2i(1, 1)
-			elif previous_part_direction == Vector2.LEFT and part_direction == Vector2.DOWN:
+			elif previous_segment_direction == Vector2i.LEFT and segment_direction == Vector2i.DOWN:
 				atlas_coords = Vector2i(3, 1)
-			elif previous_part_direction == Vector2.LEFT and part_direction == Vector2.UP:
+			elif previous_segment_direction == Vector2i.LEFT and segment_direction == Vector2i.UP:
 				atlas_coords = Vector2i(0, 1)
-			elif previous_part_direction == Vector2.UP and part_direction == Vector2.UP:
+			elif previous_segment_direction == Vector2i.UP and segment_direction == Vector2i.UP:
 				atlas_coords = Vector2i(5, 1)
-			elif previous_part_direction == Vector2.DOWN and part_direction == Vector2.DOWN:
+			elif previous_segment_direction == Vector2i.DOWN and segment_direction == Vector2i.DOWN:
 				atlas_coords = Vector2i(5, 1)
-			elif previous_part_direction == Vector2.LEFT and part_direction == Vector2.LEFT:
+			elif previous_segment_direction == Vector2i.LEFT and segment_direction == Vector2i.LEFT:
 				atlas_coords = Vector2i(2, 1)
-			elif previous_part_direction == Vector2.RIGHT and part_direction == Vector2.RIGHT:
+			elif previous_segment_direction == Vector2i.RIGHT and segment_direction == Vector2i.RIGHT:
 				atlas_coords = Vector2i(2, 1)
 	
-		tile_map_layer.set_cell(Vector2i(part.x, part.y), 0, atlas_coords)
+		tile_map_layer.set_cell(Vector2i(segment.x, segment.y), 0, atlas_coords)

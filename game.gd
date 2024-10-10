@@ -31,6 +31,7 @@ func _process(delta: float) -> void:
 		if not is_fruit_eaten and snake.get_head_position() == fruit.coords:
 			is_fruit_eaten = true
 			fruit.queue_free()
+			snake.grow()
 			
 			# Add new fruit after a delay.
 			await get_tree().create_timer(1.0).timeout
