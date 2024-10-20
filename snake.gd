@@ -8,6 +8,7 @@ var snake_segments: Array[Vector2i]
 var snake_directions: Array[Vector2i]
 var sprite_size : float = 40.0  # Size of the sprite in pixels
 var window_size : Vector2i
+signal snake_collision
 
 # Constructor for the snake object. It initializes the snake by passing a reference to the grid node
 # and calls the `reset` function to set up the initial state of the snake.
@@ -20,6 +21,7 @@ func _init(tile_map_layer):
 # which will be used to check for edge collisions.
 func _ready() -> void:
 	window_size = get_viewport_rect().size
+	connect("snake_collision", Callable(self, "reset"))
 
 # Handles player input to change the snake's direction based on arrow key presses.
 # The snake can only move in a direction that is not opposite to its current direction,
@@ -48,7 +50,7 @@ func move():
 	snake_directions[0] = direction
 
 	if is_collision_with_edges() or is_collision_with_self():
-		reset()
+		emit_signal("snake_collision")
 
 func get_head_position() -> Vector2i:
 	return snake_segments[0]

@@ -11,9 +11,13 @@ var is_fruit_eaten: bool = false
 # and adds the snake as a child of the current node to manage it within the scene.
 func _ready() -> void:
 	snake = Snake.new($Grid/Objects)
+	snake.connect("snake_collision", Callable(self, "_on_snake_collision"))
 	add_child(snake)
 	
 	add_fruit()
+				
+func _on_snake_collision():
+	$UserInterface/Score.text = "0"
 				
 # Called every frame to update the game state. 'delta' represents the time elapsed since the last frame.
 # This function handles player input, updates the movement timer, and moves and redraws the snake
@@ -32,6 +36,11 @@ func _process(delta: float) -> void:
 			is_fruit_eaten = true
 			fruit.queue_free()
 			snake.grow()
+			
+			# Convert the current score to an integer, increment it, and set it back as text
+			var current_score = int($UserInterface/Score.text)
+			var new_score = current_score + 1
+			$UserInterface/Score.text = str(new_score)			
 			
 			# Add new fruit after a delay.
 			await get_tree().create_timer(1.0).timeout
