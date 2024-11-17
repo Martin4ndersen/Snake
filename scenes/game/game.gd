@@ -1,8 +1,10 @@
 extends Node2D
 
-var Snake = load("res://snake.gd")
+var snake_scene: PackedScene = preload("res://scenes/snake/snake.tscn")
+#var Snake = load("res://scenes/snake/snake.gd")
 var snake
-var Fruit = load("res://fruit.gd")
+# var Fruit = load("res://fruit.gd")
+var fruit_scene: PackedScene = preload("res://scenes/fruit/fruit.tscn")
 var fruit
 var is_fruit_eaten: bool = false
 
@@ -10,7 +12,8 @@ var is_fruit_eaten: bool = false
 # This function creates a new instance of the Snake class, passing in the Grid node,
 # and adds the snake as a child of the current node to manage it within the scene.
 func _ready() -> void:
-	snake = Snake.new($Grid/Objects)
+	snake = snake_scene.instantiate()
+	snake.init($Grid/Objects)
 	snake.connect("snake_collision", Callable(self, "_on_snake_collision"))
 	add_child(snake)
 	
@@ -33,9 +36,10 @@ func _process(delta: float) -> void:
 		snake.draw()
 		
 		if not is_fruit_eaten and snake.get_head_position() == fruit.coords:
+			# $AudioStreamPlayer2D.play()
 			is_fruit_eaten = true
 			fruit.queue_free()
-			snake.grow()
+			snake.eat()
 			
 			# Convert the current score to an integer, increment it, and set it back as text
 			var current_score = int($UserInterface/Score.text)
@@ -55,7 +59,9 @@ func add_fruit():
 	if available_positions.size() > 0:
 		var random_index = randi() % available_positions.size()
 		var fruit_position = available_positions[random_index]
-		fruit = Fruit.new($Grid/Objects, fruit_position)
+		
+		fruit = fruit_scene.instantiate()
+		fruit.init($Grid/Objects, fruit_position)
 		add_child(fruit)
 	else:
 		print("No available position to place fruit!")			

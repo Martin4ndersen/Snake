@@ -11,7 +11,7 @@ var coords: Vector2i
 var atlas_coords = Vector2i(0, 0)
 
 # Initializes the fruit object.
-func _init(tile_map_layer: TileMapLayer, coords: Vector2i) -> void:
+func init(tile_map_layer: TileMapLayer, coords: Vector2i) -> void:
 	self.tile_map_layer = tile_map_layer
 	self.coords = coords
 

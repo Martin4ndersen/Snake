@@ -12,7 +12,7 @@ signal snake_collision
 
 # Constructor for the snake object. It initializes the snake by passing a reference to the grid node
 # and calls the `reset` function to set up the initial state of the snake.
-func _init(tile_map_layer):
+func init(tile_map_layer):
 	self.tile_map_layer = tile_map_layer
 	reset()
 
@@ -56,7 +56,7 @@ func get_head_position() -> Vector2i:
 	return snake_segments[0]
 
 # Grows the snake by adding a new segment at the end.
-func grow() -> void:
+func eat() -> void:
 	var last_segment = snake_segments[snake_segments.size() - 1]
 	var last_direction = snake_directions[snake_directions.size() - 1]
 	# Add a new segment in the opposite direction of the last one

@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://vj68qwk2sfj3"
-path="res://.godot/imported/poetsen-one-regular.ttf-c5ce6f080d6660cfce82c30a5e0dede4.fontdata"
+path="res://.godot/imported/poetsen-one-regular.ttf-e0244d8ca7cfbb5ca1131d71d7dab6ab.fontdata"
 
 [deps]
 
-source_file="res://poetsen-one-regular.ttf"
-dest_files=["res://.godot/imported/poetsen-one-regular.ttf-c5ce6f080d6660cfce82c30a5e0dede4.fontdata"]
+source_file="res://scenes/game/poetsen-one-regular.ttf"
+dest_files=["res://.godot/imported/poetsen-one-regular.ttf-e0244d8ca7cfbb5ca1131d71d7dab6ab.fontdata"]
 
 [params]
 
