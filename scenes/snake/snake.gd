@@ -57,6 +57,7 @@ func get_head_position() -> Vector2i:
 
 # Grows the snake by adding a new segment at the end.
 func eat() -> void:
+	$Eat.play()
 	var last_segment = snake_segments[snake_segments.size() - 1]
 	var last_direction = snake_directions[snake_directions.size() - 1]
 	# Add a new segment in the opposite direction of the last one

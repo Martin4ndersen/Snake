@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://brk70cpkwb5g6"]
+[gd_scene load_steps=3 format=3 uid="uid://brk70cpkwb5g6"]
 
 [ext_resource type="Script" path="res://scenes/snake/snake.gd" id="1_20b3n"]
+[ext_resource type="AudioStream" uid="uid://cqcqsxlh7xi3l" path="res://scenes/snake/crunch.wav" id="2_ma16u"]
 
 [node name="Snake" type="Node2D"]
 script = ExtResource("1_20b3n")
+
+[node name="Eat" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_ma16u")
