@@ -1,0 +1,27 @@
+name: Continuous Deployment
+run-name: ${{ github.actor }} is uploading to itch.io 🚀
+
+on:
+  push:
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: export game
+        uses: firebelley/godot-export@v6.0.0
+        with:
+          # Defining all the required inputs
+          godot_executable_download_url: https://downloads.tuxfamily.org/godotengine/4.3/Godot_v4.3-stable_linux.x86_64.zip
+          godot_export_templates_download_url: https://downloads.tuxfamily.org/godotengine/4.3/Godot_v4.3-stable_export_templates.tpz
+          relative_project_path: ./
+          archive_output: true
+
+      - name: upload game
+        uses: Martin4ndersen/itchio-upload-action@main
+        with:
+          directory: "/home/runner/.local/share/godot/archives/Web.zip"
+          butler-api-key: ${{ secrets.BUTLER_API_KEY }}
