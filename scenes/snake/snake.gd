@@ -109,46 +109,46 @@ func draw():
 	
 		if i == 0: # head
 			if segment_direction == Vector2i.UP:
-				atlas_coords = Vector2i(3, 2)
+				atlas_coords = Vector2i(3, 1)
 			elif segment_direction == Vector2i.DOWN:
-				atlas_coords = Vector2i(0, 2)
+				atlas_coords = Vector2i(0, 1)
 			elif segment_direction == Vector2i.LEFT:
-				atlas_coords = Vector2i(1, 2)
+				atlas_coords = Vector2i(1, 1)
 			elif segment_direction == Vector2i.RIGHT:
-				atlas_coords = Vector2i(2, 2)
+				atlas_coords = Vector2i(2, 1)
 		elif i == snake_segments.size() - 1: # tail
 			if previous_segment_direction == Vector2i.RIGHT:
-				atlas_coords = Vector2i(1, 3)
+				atlas_coords = Vector2i(1, 2)
 			elif previous_segment_direction == Vector2i.LEFT:
-				atlas_coords = Vector2i(2, 3)
+				atlas_coords = Vector2i(2, 2)
 			elif previous_segment_direction == Vector2i.UP:
-				atlas_coords = Vector2i(0, 3)
+				atlas_coords = Vector2i(0, 2)
 			elif previous_segment_direction == Vector2i.DOWN:
-				atlas_coords = Vector2i(3, 3)
+				atlas_coords = Vector2i(3, 2)
 		else: # body
 			if previous_segment_direction == Vector2i.UP and segment_direction == Vector2i.RIGHT:
-				atlas_coords = Vector2i(3, 1)
+				atlas_coords = Vector2i(3, 0)
 			elif previous_segment_direction == Vector2i.UP and segment_direction == Vector2i.LEFT:
-				atlas_coords = Vector2i(4, 1)
+				atlas_coords = Vector2i(4, 0)
 			elif previous_segment_direction == Vector2i.DOWN and segment_direction == Vector2i.RIGHT:
-				atlas_coords = Vector2i(0, 1)
+				atlas_coords = Vector2i(0, 0)
 			elif previous_segment_direction == Vector2i.DOWN and segment_direction == Vector2i.LEFT:
-				atlas_coords = Vector2i(1, 1)
+				atlas_coords = Vector2i(1, 0)
 			elif previous_segment_direction == Vector2i.RIGHT and segment_direction == Vector2i.DOWN:
-				atlas_coords = Vector2i(4, 1)
+				atlas_coords = Vector2i(4, 0)
 			elif previous_segment_direction == Vector2i.RIGHT and segment_direction == Vector2i.UP:
-				atlas_coords = Vector2i(1, 1)
+				atlas_coords = Vector2i(1, 0)
 			elif previous_segment_direction == Vector2i.LEFT and segment_direction == Vector2i.DOWN:
-				atlas_coords = Vector2i(3, 1)
+				atlas_coords = Vector2i(3, 0)
 			elif previous_segment_direction == Vector2i.LEFT and segment_direction == Vector2i.UP:
-				atlas_coords = Vector2i(0, 1)
+				atlas_coords = Vector2i(0, 0)
 			elif previous_segment_direction == Vector2i.UP and segment_direction == Vector2i.UP:
-				atlas_coords = Vector2i(5, 1)
+				atlas_coords = Vector2i(5, 0)
 			elif previous_segment_direction == Vector2i.DOWN and segment_direction == Vector2i.DOWN:
-				atlas_coords = Vector2i(5, 1)
+				atlas_coords = Vector2i(5, 0)
 			elif previous_segment_direction == Vector2i.LEFT and segment_direction == Vector2i.LEFT:
-				atlas_coords = Vector2i(2, 1)
+				atlas_coords = Vector2i(2, 0)
 			elif previous_segment_direction == Vector2i.RIGHT and segment_direction == Vector2i.RIGHT:
-				atlas_coords = Vector2i(2, 1)
+				atlas_coords = Vector2i(2, 0)
 	
 		tile_map_layer.set_cell(Vector2i(segment.x, segment.y), 0, atlas_coords)

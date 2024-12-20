@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://cnqcq21sid7m8"]
+[gd_scene load_steps=13 format=3 uid="uid://cnqcq21sid7m8"]
 
 [ext_resource type="Script" path="res://scenes/game/game.gd" id="1_a7j2q"]
 [ext_resource type="Script" path="res://scenes/game/grid.gd" id="2_gil1g"]
 [ext_resource type="Texture2D" uid="uid://orhdjvwd6j8m" path="res://scenes/game/grass.png" id="3_6g2ag"]
-[ext_resource type="Texture2D" uid="uid://isv4sfevij80" path="res://scenes/objects.png" id="4_ptruv"]
+[ext_resource type="Texture2D" uid="uid://7kgp0g5fodxg" path="res://scenes/snake/snake.png" id="4_sowgo"]
 [ext_resource type="FontFile" uid="uid://vj68qwk2sfj3" path="res://scenes/game/poetsen-one-regular.ttf" id="5_i7fqm"]
+[ext_resource type="Texture2D" uid="uid://dw7wocvhvxdwt" path="res://scenes/fruit/fruit.png" id="5_q83gv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_brrx7"]
 texture = ExtResource("3_6g2ag")
@@ -16,28 +17,33 @@ texture_region_size = Vector2i(40, 40)
 tile_size = Vector2i(40, 40)
 sources/0 = SubResource("TileSetAtlasSource_brrx7")
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gnqsg"]
-texture = ExtResource("4_ptruv")
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_b4wqv"]
+texture = ExtResource("4_sowgo")
 texture_region_size = Vector2i(40, 40)
 0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
 0:1/0 = 0
 1:1/0 = 0
 2:1/0 = 0
 3:1/0 = 0
-4:1/0 = 0
-5:1/0 = 0
 0:2/0 = 0
 1:2/0 = 0
 2:2/0 = 0
 3:2/0 = 0
-0:3/0 = 0
-1:3/0 = 0
-2:3/0 = 0
-3:3/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4ne6m"]
+texture = ExtResource("5_q83gv")
+texture_region_size = Vector2i(40, 40)
+0:0/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_r6wv6"]
 tile_size = Vector2i(40, 40)
-sources/0 = SubResource("TileSetAtlasSource_gnqsg")
+sources/0 = SubResource("TileSetAtlasSource_b4wqv")
+sources/1 = SubResource("TileSetAtlasSource_4ne6m")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i3d7m"]
 content_margin_left = 40.0
@@ -81,6 +87,6 @@ vertical_alignment = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="UserInterface"]
 position = Vector2(1156, 650)
-texture = ExtResource("4_ptruv")
+texture = ExtResource("5_q83gv")
 region_enabled = true
 region_rect = Rect2(0, 0, 40, 40)

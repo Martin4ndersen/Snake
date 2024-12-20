@@ -17,4 +17,4 @@ func init(tile_map_layer: TileMapLayer, coords: Vector2i) -> void:
 
 # Draws the fruit on the tile map layer.
 func draw() -> void:
-	tile_map_layer.set_cell(coords, 0, atlas_coords)
+	tile_map_layer.set_cell(coords, 1, atlas_coords)
