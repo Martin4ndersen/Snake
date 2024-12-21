@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=3 uid="uid://b1r3la55yrebb"]
+
+[ext_resource type="FontFile" uid="uid://vj68qwk2sfj3" path="res://scenes/game/poetsen-one-regular.ttf" id="1_pk4rx"]
+[ext_resource type="Texture2D" uid="uid://dw7wocvhvxdwt" path="res://scenes/fruit/fruit.png" id="2_6cv0i"]
+
+[sub_resource type="GDScript" id="GDScript_cttl6"]
+script/source = "extends CanvasLayer
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i3d7m"]
+content_margin_left = 40.0
+content_margin_top = 4.0
+content_margin_right = 5.0
+content_margin_bottom = 4.0
+bg_color = Color(0.654902, 0.819608, 0.239216, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.219608, 0.290196, 0.0470588, 1)
+
+[node name="UserInterface" type="CanvasLayer"]
+script = SubResource("GDScript_cttl6")
+
+[node name="Score" type="Label" parent="."]
+offset_left = 1139.0
+offset_top = 631.0
+offset_right = 1201.0
+offset_bottom = 669.0
+theme_override_colors/font_color = Color(0.219608, 0.290196, 0.0470588, 1)
+theme_override_constants/outline_size = 0
+theme_override_fonts/font = ExtResource("1_pk4rx")
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxFlat_i3d7m")
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1156, 650)
+texture = ExtResource("2_6cv0i")
+region_enabled = true
+region_rect = Rect2(0, 0, 40, 40)
