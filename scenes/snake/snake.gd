@@ -87,14 +87,7 @@ func is_collision_with_self():
 # If the head crosses the boundaries, it returns `true`. Otherwise, it returns `false`.
 func is_collision_with_edges():
 	var head = snake_segments[0]
-
-	if head.x < 0 or head.x > window_size.x / sprite_size - 1:
-		return true
-
-	if head.y < 0 or head.y > window_size.y / sprite_size - 1:
-		return true
-
-	return false
+	return head.x < 0 or head.x >= window_size.x / sprite_size or head.y < 0 or head.y >= window_size.y / sprite_size
 
 # Draws the snake on the grid using atlas coordinates for different segments of the snake (head, body, and tail).
 # Each segment of the snake is drawn according to its position and direction, and different atlas coordinates are used
