@@ -1,9 +1,7 @@
 extends Node2D
 
 var snake_scene: PackedScene = preload("res://scenes/snake/snake.tscn")
-#var Snake = load("res://scenes/snake/snake.gd")
 var snake
-# var Fruit = load("res://fruit.gd")
 var fruit_scene: PackedScene = preload("res://scenes/fruit/fruit.tscn")
 var fruit
 var is_fruit_eaten: bool = false
@@ -36,7 +34,6 @@ func _process(delta: float) -> void:
 		snake.draw()
 		
 		if not is_fruit_eaten and snake.get_head_position() == fruit.coords:
-			# $AudioStreamPlayer2D.play()
 			is_fruit_eaten = true
 			fruit.queue_free()
 			snake.eat()
