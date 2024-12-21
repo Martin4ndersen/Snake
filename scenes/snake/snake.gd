@@ -108,47 +108,49 @@ func draw():
 		var previous_segment_direction = snake_directions[i - 1]
 	
 		if i == 0: # head
-			if segment_direction == Vector2i.UP:
-				atlas_coords = Vector2i(3, 1)
-			elif segment_direction == Vector2i.DOWN:
-				atlas_coords = Vector2i(0, 1)
-			elif segment_direction == Vector2i.LEFT:
-				atlas_coords = Vector2i(1, 1)
-			elif segment_direction == Vector2i.RIGHT:
-				atlas_coords = Vector2i(2, 1)
+			atlas_coords = get_head_atlas_coords(segment_direction)
 		elif i == snake_segments.size() - 1: # tail
-			if previous_segment_direction == Vector2i.RIGHT:
-				atlas_coords = Vector2i(1, 2)
-			elif previous_segment_direction == Vector2i.LEFT:
-				atlas_coords = Vector2i(2, 2)
-			elif previous_segment_direction == Vector2i.UP:
-				atlas_coords = Vector2i(0, 2)
-			elif previous_segment_direction == Vector2i.DOWN:
-				atlas_coords = Vector2i(3, 2)
+			atlas_coords = get_tail_atlas_coords(previous_segment_direction)
 		else: # body
-			if previous_segment_direction == Vector2i.UP and segment_direction == Vector2i.RIGHT:
-				atlas_coords = Vector2i(3, 0)
-			elif previous_segment_direction == Vector2i.UP and segment_direction == Vector2i.LEFT:
-				atlas_coords = Vector2i(4, 0)
-			elif previous_segment_direction == Vector2i.DOWN and segment_direction == Vector2i.RIGHT:
-				atlas_coords = Vector2i(0, 0)
-			elif previous_segment_direction == Vector2i.DOWN and segment_direction == Vector2i.LEFT:
-				atlas_coords = Vector2i(1, 0)
-			elif previous_segment_direction == Vector2i.RIGHT and segment_direction == Vector2i.DOWN:
-				atlas_coords = Vector2i(4, 0)
-			elif previous_segment_direction == Vector2i.RIGHT and segment_direction == Vector2i.UP:
-				atlas_coords = Vector2i(1, 0)
-			elif previous_segment_direction == Vector2i.LEFT and segment_direction == Vector2i.DOWN:
-				atlas_coords = Vector2i(3, 0)
-			elif previous_segment_direction == Vector2i.LEFT and segment_direction == Vector2i.UP:
-				atlas_coords = Vector2i(0, 0)
-			elif previous_segment_direction == Vector2i.UP and segment_direction == Vector2i.UP:
-				atlas_coords = Vector2i(5, 0)
-			elif previous_segment_direction == Vector2i.DOWN and segment_direction == Vector2i.DOWN:
-				atlas_coords = Vector2i(5, 0)
-			elif previous_segment_direction == Vector2i.LEFT and segment_direction == Vector2i.LEFT:
-				atlas_coords = Vector2i(2, 0)
-			elif previous_segment_direction == Vector2i.RIGHT and segment_direction == Vector2i.RIGHT:
-				atlas_coords = Vector2i(2, 0)
+			atlas_coords = get_body_atlas_coords(previous_segment_direction, segment_direction)
 	
 		tile_map_layer.set_cell(Vector2i(segment.x, segment.y), 0, atlas_coords)
+
+# Gets the atlas coordinates for the snake's head based on its direction.
+func get_head_atlas_coords(direction: Vector2i) -> Vector2i:
+	var head_atlas = {
+		Vector2i.UP: Vector2i(3, 1),
+		Vector2i.DOWN: Vector2i(0, 1),
+		Vector2i.LEFT: Vector2i(1, 1),
+		Vector2i.RIGHT: Vector2i(2, 1),
+	}
+	return head_atlas[direction]
+
+# Gets the atlas coordinates for the snake's tail based on its direction.
+func get_tail_atlas_coords(direction: Vector2i) -> Vector2i:
+	var tail_atlas = {
+		Vector2i.RIGHT: Vector2i(1, 2),
+		Vector2i.LEFT: Vector2i(2, 2),
+		Vector2i.UP: Vector2i(0, 2),
+		Vector2i.DOWN: Vector2i(3, 2),
+	}
+	return tail_atlas[direction]
+
+# Gets the atlas coordinates for the snake's body based on its connection directions.
+func get_body_atlas_coords(previous_dir: Vector2i, current_dir: Vector2i) -> Vector2i:
+	var body_atlas = {
+		[Vector2i.UP, Vector2i.RIGHT]: Vector2i(3, 0),
+		[Vector2i.UP, Vector2i.LEFT]: Vector2i(4, 0),
+		[Vector2i.DOWN, Vector2i.RIGHT]: Vector2i(0, 0),
+		[Vector2i.DOWN, Vector2i.LEFT]: Vector2i(1, 0),
+		[Vector2i.RIGHT, Vector2i.DOWN]: Vector2i(4, 0),
+		[Vector2i.RIGHT, Vector2i.UP]: Vector2i(1, 0),
+		[Vector2i.LEFT, Vector2i.DOWN]: Vector2i(3, 0),
+		[Vector2i.LEFT, Vector2i.UP]: Vector2i(0, 0),
+		[Vector2i.UP, Vector2i.UP]: Vector2i(5, 0),
+		[Vector2i.DOWN, Vector2i.DOWN]: Vector2i(5, 0),
+		[Vector2i.LEFT, Vector2i.LEFT]: Vector2i(2, 0),
+		[Vector2i.RIGHT, Vector2i.RIGHT]: Vector2i(2, 0)
+	}
+	
+	return body_atlas.get([previous_dir, current_dir])
