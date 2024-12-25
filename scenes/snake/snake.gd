@@ -4,6 +4,7 @@ var move_delay: float = 0.1
 var move_timer: float = 0.0
 var tile_map_layer : TileMapLayer
 var direction : Vector2i
+var next_direction: Vector2i
 var snake_segments: Array[Vector2i]
 var snake_directions: Array[Vector2i]
 var sprite_size : float = 40.0  # Size of the sprite in pixels
@@ -28,18 +29,21 @@ func _ready() -> void:
 # preventing it from reversing into itself.
 func handle_input():
 	if Input.is_action_pressed("ui_up") and direction != Vector2i.DOWN:
-		direction = Vector2i.UP
+		next_direction = Vector2i.UP
 	elif Input.is_action_pressed("ui_down") and direction != Vector2i.UP:
-		direction = Vector2i.DOWN
+		next_direction = Vector2i.DOWN
 	elif Input.is_action_pressed("ui_left") and direction != Vector2i.RIGHT:
-		direction = Vector2i.LEFT
+		next_direction = Vector2i.LEFT
 	elif Input.is_action_pressed("ui_right") and direction != Vector2i.LEFT:
-		direction = Vector2i.RIGHT
+		next_direction = Vector2i.RIGHT
 
 # Moves the snake's body and head, and checks for collisions with edges or itself.
 # The snake's body segments follow the movement of the segment ahead of them, while the head moves in the current direction.
 # If a collision with the window edges or the snake's own body occurs, the snake is reset.
 func move():
+	# Update the snake's direction
+	direction = next_direction
+	
 	# Move the snake's body
 	for i in range(snake_segments.size() - 1, 0, -1):
 		snake_segments[i] = snake_segments[i - 1]
@@ -66,6 +70,7 @@ func eat() -> void:
 
 func reset():
 	direction = Vector2i.RIGHT
+	next_direction = Vector2i.RIGHT
 	snake_segments = [Vector2i(16, 7), Vector2i(15, 7), Vector2i(14, 7)]
 	snake_directions = [Vector2i.RIGHT, Vector2i.RIGHT, Vector2i.RIGHT]  # Track directions for each segment
 
