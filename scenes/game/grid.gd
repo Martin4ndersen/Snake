@@ -4,7 +4,7 @@ const tile_size : int = 40
 
 # Called when the node is added to the scene and ready to execute.
 func _ready() -> void:
-	var viewport_size = get_viewport_rect().size
+	var viewport_size: Vector2 = get_viewport_rect().size
 	
 	for x in range(viewport_size.x / tile_size):
 		for y in range(viewport_size.y / tile_size):
@@ -21,7 +21,7 @@ func get_empty_cells() -> Array[Vector2i]:
 	
 	for x in range(viewport_size.x / tile_size):
 		for y in range(viewport_size.y / tile_size):
-			var cell = Vector2i(x, y)
+			var cell: Vector2i = Vector2i(x, y)
 			if cell not in used_cells:
 				empty_cells.append(cell)
 

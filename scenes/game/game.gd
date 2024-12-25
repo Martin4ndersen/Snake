@@ -39,8 +39,8 @@ func _process(delta: float) -> void:
 			snake.eat()
 			
 			# Convert the current score to an integer, increment it, and set it back as text
-			var current_score = int($UserInterface/Score.text)
-			var new_score = current_score + 1
+			var current_score: int = int($UserInterface/Score.text)
+			var new_score: int = current_score + 1
 			$UserInterface/Score.text = str(new_score)			
 			
 			# Add new fruit after a delay.
@@ -54,8 +54,8 @@ func _process(delta: float) -> void:
 func add_fruit():
 	var available_positions: Array[Vector2i] = $Grid.get_empty_cells()
 	if available_positions.size() > 0:
-		var random_index = randi() % available_positions.size()
-		var fruit_position = available_positions[random_index]
+		var random_index: int = randi() % available_positions.size()
+		var fruit_position: Vector2i = available_positions[random_index]
 		
 		fruit = fruit_scene.instantiate()
 		fruit.init($Grid/Objects, fruit_position)

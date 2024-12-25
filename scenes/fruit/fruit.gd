@@ -8,7 +8,7 @@ var tile_map_layer : TileMapLayer
 var coords: Vector2i        
 	  
 # The atlas coordinates on the texture to use for this fruit.
-var atlas_coords = Vector2i(0, 0)
+var atlas_coords: Vector2i = Vector2i(0, 0)
 
 # Initializes the fruit object.
 func init(tile_map_layer: TileMapLayer, coords: Vector2i) -> void:

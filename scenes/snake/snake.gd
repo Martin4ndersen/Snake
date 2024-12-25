@@ -62,8 +62,8 @@ func get_head_position() -> Vector2i:
 # Grows the snake by adding a new segment at the end.
 func eat() -> void:
 	$Eat.play()
-	var last_segment = snake_segments[snake_segments.size() - 1]
-	var last_direction = snake_directions[snake_directions.size() - 1]
+	var last_segment: Vector2i = snake_segments[snake_segments.size() - 1]
+	var last_direction: Vector2i = snake_directions[snake_directions.size() - 1]
 	# Add a new segment in the opposite direction of the last one
 	snake_segments.append(last_segment - last_direction)
 	snake_directions.append(last_direction)
@@ -78,8 +78,8 @@ func reset():
 # This function iterates through all segments of the snake's body (excluding the head)
 # and checks if the head occupies the same position as any of the body segments.
 # If a collision is detected, it returns `true`. Otherwise, it returns `false`.
-func is_collision_with_self():
-	var head = snake_segments[0]
+func is_collision_with_self() -> bool:
+	var head: Vector2i = snake_segments[0]
 	
 	for i in range(1, snake_segments.size()):
 		if head == snake_segments[i]:
@@ -90,8 +90,8 @@ func is_collision_with_self():
 # Checks if the snake's head collides with the edges of the game window.
 # The function checks whether the head's x or y position goes outside the window's boundaries.
 # If the head crosses the boundaries, it returns `true`. Otherwise, it returns `false`.
-func is_collision_with_edges():
-	var head = snake_segments[0]
+func is_collision_with_edges() -> bool:
+	var head: Vector2i = snake_segments[0]
 	return head.x < 0 or head.x >= window_size.x / sprite_size or head.y < 0 or head.y >= window_size.y / sprite_size
 
 # Draws the snake on the grid using atlas coordinates for different segments of the snake (head, body, and tail).
@@ -101,9 +101,9 @@ func draw():
 	var atlas_coords: Vector2i
 	
 	for i in range(snake_segments.size()):
-		var segment = snake_segments[i]
-		var segment_direction = snake_directions[i]
-		var previous_segment_direction = snake_directions[i - 1]
+		var segment: Vector2i = snake_segments[i]
+		var segment_direction: Vector2i = snake_directions[i]
+		var previous_segment_direction: Vector2i = snake_directions[i - 1]
 	
 		if i == 0: # head
 			atlas_coords = get_head_atlas_coords(segment_direction)
@@ -116,7 +116,7 @@ func draw():
 
 # Gets the atlas coordinates for the snake's head based on its direction.
 func get_head_atlas_coords(direction: Vector2i) -> Vector2i:
-	var head_atlas = {
+	var head_atlas: Dictionary = {
 		Vector2i.UP: Vector2i(3, 1),
 		Vector2i.DOWN: Vector2i(0, 1),
 		Vector2i.LEFT: Vector2i(1, 1),
@@ -126,7 +126,7 @@ func get_head_atlas_coords(direction: Vector2i) -> Vector2i:
 
 # Gets the atlas coordinates for the snake's tail based on its direction.
 func get_tail_atlas_coords(direction: Vector2i) -> Vector2i:
-	var tail_atlas = {
+	var tail_atlas: Dictionary = {
 		Vector2i.RIGHT: Vector2i(1, 2),
 		Vector2i.LEFT: Vector2i(2, 2),
 		Vector2i.UP: Vector2i(0, 2),
@@ -136,7 +136,7 @@ func get_tail_atlas_coords(direction: Vector2i) -> Vector2i:
 
 # Gets the atlas coordinates for the snake's body based on its connection directions.
 func get_body_atlas_coords(previous_dir: Vector2i, current_dir: Vector2i) -> Vector2i:
-	var body_atlas = {
+	var body_atlas: Dictionary = {
 		[Vector2i.UP, Vector2i.RIGHT]: Vector2i(3, 0),
 		[Vector2i.UP, Vector2i.LEFT]: Vector2i(4, 0),
 		[Vector2i.DOWN, Vector2i.RIGHT]: Vector2i(0, 0),
