@@ -11,7 +11,7 @@ var is_fruit_eaten: bool = false
 # and adds the snake as a child of the current node to manage it within the scene.
 func _ready() -> void:
 	snake = snake_scene.instantiate()
-	snake.init($Grid/Objects)
+	snake.init($Grid/Objects, get_viewport_rect().size)
 	snake.connect("snake_collision", Callable(self, "_on_snake_collision"))
 	add_child(snake)
 	

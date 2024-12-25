@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 var move_delay: float = 0.1
 var move_timer: float = 0.0
@@ -8,20 +8,20 @@ var next_direction: Vector2i
 var snake_segments: Array[Vector2i]
 var snake_directions: Array[Vector2i]
 var sprite_size : float = 40.0  # Size of the sprite in pixels
-var window_size : Vector2i
+var viewport_size : Vector2i
 signal snake_collision
 
 # Constructor for the snake object. It initializes the snake by passing a reference to the grid node
 # and calls the `reset` function to set up the initial state of the snake.
-func init(tile_map_layer):
+func init(tile_map_layer: TileMapLayer, viewport_size: Vector2i) -> void:
 	self.tile_map_layer = tile_map_layer
+	self.viewport_size = viewport_size
 	reset()
 
 # Called when the node is added to the scene and ready to execute.
 # This function retrieves the size of the current viewport (game window) and stores it in `window_size`,
 # which will be used to check for edge collisions.
 func _ready() -> void:
-	window_size = get_viewport_rect().size
 	connect("snake_collision", Callable(self, "reset"))
 
 # Handles player input to change the snake's direction based on arrow key presses.
@@ -92,7 +92,7 @@ func is_collision_with_self() -> bool:
 # If the head crosses the boundaries, it returns `true`. Otherwise, it returns `false`.
 func is_collision_with_edges() -> bool:
 	var head: Vector2i = snake_segments[0]
-	return head.x < 0 or head.x >= window_size.x / sprite_size or head.y < 0 or head.y >= window_size.y / sprite_size
+	return head.x < 0 or head.x >= viewport_size.x / sprite_size or head.y < 0 or head.y >= viewport_size.y / sprite_size
 
 # Draws the snake on the grid using atlas coordinates for different segments of the snake (head, body, and tail).
 # Each segment of the snake is drawn according to its position and direction, and different atlas coordinates are used
